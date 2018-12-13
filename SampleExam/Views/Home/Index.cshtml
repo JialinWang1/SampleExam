@@ -1,0 +1,97 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@model PlanetsAndSpaceShip
+<style>
+    table {
+        border: black solid 1px;
+        font-size: 35px;
+        text-align: center
+    }
+
+    th {
+        text-align: center;
+        border: black solid 1px;
+        background-color: darkgray;
+    }
+
+    td {
+        border: black solid 1px;
+    }
+
+    .arrows {
+        font-size: 25px;
+    }
+
+    form {
+        display: inline;
+    }
+</style>
+
+<h1>
+    Space Transporter
+</h1>
+
+<form asp-action="AddShip" asp-controller="Home">
+    <button type="submit">add</button>
+</form>
+<form asp-action="Remove" asp-controller="Home">
+    <button type="submit">Remove</button>
+</form>
+<table>
+    <tr>
+        <th>
+            Planet
+        </th>
+        <th>
+            Population
+        </th>
+        <th>
+            Spaceship location
+        </th>
+        <th>
+            People on ship
+        </th>
+    </tr>
+    @if (Model.SpaceShip.Planet != null)
+    {
+        
+        foreach (var planet in Model.Planets)
+         {
+             <tr>
+                 <td>
+                     @planet.PlanetName
+                 </td>
+                 <td>
+                     @planet.Population
+                 </td>
+                 <td>
+                     @if (Model.SpaceShip.Planet.PlanetName == planet.PlanetName)
+                     {
+                         <form asp-action="ToPlanet" asp-controller="Home" asp-route-id="@planet.PlanetID">
+                             <button class="arrows" type="submit">←to planet</button>
+                         </form><form asp-action="ToShip" asp-controller="Home" asp-route-id="@planet.PlanetID">
+                                    <button class="arrows" type="submit">to ship→</button>
+                                </form>
+                     }
+                     else
+                     {
+                         <form asp-action="MoveHere" asp-controller="Home" asp-route-id="@planet.PlanetID">
+                             <button type="submit">Move Here</button>
+                         </form>
+                     }
+                 </td>
+                 <td>
+                     @if (Model.SpaceShip.Planet.PlanetName == planet.PlanetName)
+                     {
+                         <label>@Model.SpaceShip.Utilization</label>
+                     }
+                     else
+                     {
+                         <label>--</label>
+                     }
+                 </td>
+             </tr>
+         }
+    }
+</table>
